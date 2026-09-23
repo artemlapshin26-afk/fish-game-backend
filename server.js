@@ -10,7 +10,7 @@ const pool = new Pool({
   host: 'aws-0-eu-central-1.pooler.supabase.com',
   port: 6543,
   database: 'postgres',
-  user: 'postgres', // Меняем обратно на просто postgres для проверки
+  user: 'postgres.alpzoylebgrtevlzbeev',
   password: 'Artik1337228',
   ssl: {
     rejectUnauthorized: false
@@ -18,6 +18,12 @@ const pool = new Pool({
   family: 4
 });
 
+// Перехват ошибок пула, чтобы сервер не падал
+pool.on('error', (err) => {
+  console.error('Неожиданная ошибка базы данных:', err);
+});
+
+// Проверка подключения
 pool.connect((err, client, release) => {
   if (err) {
     console.error('Ошибка подключения к базе данных:', err.stack);
@@ -31,9 +37,11 @@ app.get('/', (req, res) => {
   res.send('Fish Game Backend is running!');
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
+// Используем порт от Render или стандартный 3000
+const PORT = process.env.PORT || 3000;
+const server = app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
+});
 });
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
