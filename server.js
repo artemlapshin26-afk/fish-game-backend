@@ -6,24 +6,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Используем стандартную переменную окружения DATABASE_URL
 const pool = new Pool({
-  host: 'aws-0-eu-central-1.pooler.supabase.com',
-  port: 6543,
-  database: 'postgres',
-  user: 'postgres.alpzoylebgrtevlzbeev',
-  password: 'Artik1337228',
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   },
   family: 4
 });
 
-// Перехват ошибок пула, чтобы сервер не падал
-pool.on('error', (err) => {
-  console.error('Неожиданная ошибка базы данных:', err);
-});
-
-// Проверка подключения
 pool.connect((err, client, release) => {
   if (err) {
     console.error('Ошибка подключения к базе данных:', err.stack);
@@ -34,6 +25,13 @@ pool.connect((err, client, release) => {
 });
 
 app.get('/', (req, res) => {
+  res.send('Fish Game Backend is running!');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT}`);
+});
   res.send('Fish Game Backend is running!');
 });
 
