@@ -6,12 +6,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Передаем параметры подключения отдельно, чтобы избежать ошибок парсинга строки
 const pool = new Pool({
   host: 'aws-0-eu-central-1.pooler.supabase.com',
   port: 6543,
   database: 'postgres',
-  user: 'postgres.alpzoylebgrtevlzbeev',
+  user: 'postgres', // Меняем обратно на просто postgres для проверки
   password: 'Artik1337228',
   ssl: {
     rejectUnauthorized: false
@@ -19,7 +18,6 @@ const pool = new Pool({
   family: 4
 });
 
-// Проверка подключения к базе данных
 pool.connect((err, client, release) => {
   if (err) {
     console.error('Ошибка подключения к базе данных:', err.stack);
@@ -34,6 +32,9 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT}`);
+});
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
 });
