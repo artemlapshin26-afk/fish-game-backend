@@ -6,12 +6,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Передаем параметры подключения отдельно, чтобы избежать ошибок парсинга строки
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  host: 'aws-0-eu-central-1.pooler.supabase.com',
+  port: 6543,
+  database: 'postgres',
+  user: 'postgres.alpzoylebgrtevlzbeev',
+  password: 'Artik1337228',
   ssl: {
     rejectUnauthorized: false
   },
-  family: 4 // Жестко принуждает использовать только IPv4
+  family: 4
 });
 
 // Проверка подключения к базе данных
